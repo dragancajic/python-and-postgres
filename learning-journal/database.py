@@ -9,6 +9,23 @@ import sqlite3  # use this built-in module to interact with SQLite from within P
 # connection object here is more useful, then inside the function
 connection = sqlite3.connect('data.db')
 
+# You can think of the *cursor* as the arrow that moves from row to row.
+# We use it to point at each row as we process it (or in this case, access it):
+cursor = connection.cursor()
+cursor.execute("SELECT * FROM user;")
+
+for row in cursor:
+    print(row)
+
+# However it makes less sense with code like this:
+cursor.execute("INSERT INTO account VALUES ('John Smith', '35');")
+
+# I believe that this is just to make the code more consistent.
+# Every query uses a cursor, and that's it! ;-)
+
+connection.close()
+
+
 def create_table():
     """
     Function that will be in charge of creating the table.
@@ -28,6 +45,15 @@ def create_table():
     # When you use the **context manager***, `with connection`, it'll automatically
     # *commit* for you at the end of the *context manager*, or *roll back* if an error
     # was encountered.
+
+# Didn't we skip cursors before?
+
+# But actually, the `connection.execute` method creates a cursor for you, so it really is
+# the same thing as creating the cursor manually. However, it is a little bit shorter so
+# you can use this when you don't need to make it explicit that a cursor is being used.
+
+# The `connection.execute` method returns the **cursor** for you, so you can always
+# use it to go through rows if you were executing a `SELECT` statement.
 
 
 def close_connection():
