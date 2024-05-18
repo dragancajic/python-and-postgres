@@ -15,3 +15,11 @@ INSERT INTO user VALUES ('Dragan', 'Ćajić');
 
 -- select/show all data from `user` table
 SELECT * FROM user;
+
+-- INSERT INTO user VALUES ('Rolf', 'Smith');
+-- or create a new row in the table,
+-- BUT **without providing a `surname`** for the `user`:
+INSERT INTO user (first_name) VALUES ('Rolf');
+-- or
+-- THIS WAY your query is tied to the table structure.
+INSERT INTO user (first_name, surname) VALUES ('Rolf', 'Smith');
