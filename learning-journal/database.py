@@ -18,12 +18,15 @@ for row in cursor:
     print(row)
 
 # However it makes less sense with code like this:
+cursor.execute("DROP TABLE IF EXISTS account;")
+cursor.execute("CREATE TABLE IF NOT EXISTS account (name TEXT, number TEXT);")
 cursor.execute("INSERT INTO account VALUES ('John Smith', '35');")
 
 # I believe that this is just to make the code more consistent.
 # Every query uses a cursor, and that's it! ;-)
 
-connection.close()
+# close connection to the DB when you have finished working with DB! ;-)
+#connection.close()
 
 
 def create_table():
@@ -41,7 +44,7 @@ def create_table():
     # The easiest way to handle both *committing* and *rolling back*
     # in one go is by using the **context manager**:
     with connection:  # committing and/or rolling back using `context manager`!
-        connection.execute("CREATE TABLE entry (content TEXT, date TEXT);")
+        connection.execute("CREATE TABLE IF NOT EXISTS entry (content TEXT, date TEXT);")
     # When you use the **context manager***, `with connection`, it'll automatically
     # *commit* for you at the end of the *context manager*, or *roll back* if an error
     # was encountered.
@@ -56,25 +59,31 @@ def create_table():
 # use it to go through rows if you were executing a `SELECT` statement.
 
 
+### Decoupling data from display ###
+
+entries = []  # list of dictionaries is not used anymore!
+
+# put data into SQLite DB, instead of using `entries` list data store
+def add_entry(content, date):
+    '''Insert new entry into `SQLite` DB's `entry` table.'''
+    with connection:
+        connection.execute(
+            "INSERT INTO entry VALUES (?, ?);",
+            (content, date)
+        )
+
+
+# Get entries from the data store
+def get_entries():
+    '''Get all content from the `entries` list of dictionaries'''
+    print('\nYour entry is in the DB, ...')
+    print("Sorry! It'll be shown later.")
+    return entries  # `entries` list is empty now, use DB table!
+
+
 def close_connection():
     """
     ALWAYS close connection, when you've finished working with DB!
     """
     connection.close()
     print("Connection to the DB is closed!")
-
-
-entries = []
-
-# Decoupling data from display
-
-# Add an entry to the data store
-def add_entry(entry_content, entry_date):
-    '''Add/Append new entry into `entries` list of dictionaries.'''
-    entries.append({"content": entry_content, "date": entry_date})
-
-
-# Get entries from the data store
-def get_entries():
-    '''Get all content from the `entries` list of dictionaries'''
-    return entries

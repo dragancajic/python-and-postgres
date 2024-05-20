@@ -4,7 +4,7 @@
 Python file that contains all the application logic.
 '''
 from database import add_entry, get_entries
-from database import close_connection
+from database import create_table, close_connection
 
 WELCOME = "Welcome to the Learning Journal!"
 print('\n' + WELCOME)
@@ -22,6 +22,8 @@ def prompt_new_entry():
     entry_content = input("\nWhat have you learned today? ")
     entry_date = input("Enter the date: ")
 
+    # FIRST, you have to create table `entry` into wich you want to INSERT data!
+    create_table()  # create `entry` table, then insert `content` and `date`!
     add_entry(entry_content, entry_date)
 
 
