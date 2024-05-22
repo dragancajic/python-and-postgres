@@ -28,12 +28,14 @@ def prompt_new_entry():
 
 
 def view_entries(entries):
-    '''Funcion for viewing all entries from the data store.'''
+    '''Funcion for viewing all entries from the data store.
+    But the cursor will use indexes instead of keys to access values.
+    '''
     for entry in entries:
         print(f"\n{entry['date']}\n{entry['content']}")
 
 
-# Using Python 3.8's Walrus Operator (`walrus` | морж)
+# Using Python 3.8's Walrus Operator (`walrus` [wol-rus] | морж) √
 while (user_input := input(MENU)) != "3":
     # We'll deal with user input here...
     if user_input == "1":

@@ -9,24 +9,19 @@ import sqlite3  # use this built-in module to interact with SQLite from within P
 # connection object here is more useful, then inside the function
 connection = sqlite3.connect('data.db')
 
-# You can think of the *cursor* as the arrow that moves from row to row.
-# We use it to point at each row as we process it (or in this case, access it):
-cursor = connection.cursor()
-cursor.execute("SELECT * FROM user;")
 
-for row in cursor:
-    print(row)
+# Whenever SQLite executes a query and builds a result set, it puts each resultant row
+# of data into the cursor as a tuple. But we can tell it to create an object instead.
 
-# However it makes less sense with code like this:
-cursor.execute("DROP TABLE IF EXISTS account;")
-cursor.execute("CREATE TABLE IF NOT EXISTS account (name TEXT, number TEXT);")
-cursor.execute("INSERT INTO account VALUES ('John Smith', '35');")
+# If we tell it to create an object, we can make that object allow us to access each
+# column by its name instead of by index.
 
-# I believe that this is just to make the code more consistent.
-# Every query uses a cursor, and that's it! ;-)
-
-# close connection to the DB when you have finished working with DB! ;-)
-#connection.close()
+# Fortunately, we don't have to code these objects ourselves.
+# SQLite comes with one that does it all for us.
+# To tell SQLite to use it when fetching results, all we have to do is this:
+connection.row_factory = sqlite3.Row
+# What that'll do is for each row of data, SQLite will put the data into a `sqlite3.Row`
+# object that allows us to access the data by the name of the column.
 
 
 def create_table():
@@ -75,10 +70,10 @@ def add_entry(content, date):
 
 # Get entries from the data store
 def get_entries():
-    '''Get all content from the `entries` list of dictionaries'''
-    print('\nYour entry is in the DB, ...')
-    print("Sorry! It'll be shown later.")
-    return entries  # `entries` list is empty now, use DB table!
+    '''Select all inputs from the `entry` table.
+    This will return the cursor, and then we can iterate over the cursor inside `app.py`.
+    '''
+    return connection.execute("SELECT * FROM entry;")
 
 
 def close_connection():
