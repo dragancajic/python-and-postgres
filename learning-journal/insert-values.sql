@@ -23,3 +23,14 @@ INSERT INTO user (first_name) VALUES ('Rolf');
 -- or
 -- THIS WAY your query is tied to the table structure.
 INSERT INTO user (first_name, surname) VALUES ('Rolf', 'Smith');
+
+
+-- INSERT multiple rows of data in a single statement/query <-- LOOK! :eyes: √
+INSERT INTO
+    user (first_name, surname)
+VALUES
+    ('Лука', 'Ћајић'),
+    ('Нада', 'Ћајић'),
+    ('Бојан', 'Ћајић'),
+    ('Драган', 'Ћајић');
+-- Execution finished without errors. <-- WORKS WELL! :-)
