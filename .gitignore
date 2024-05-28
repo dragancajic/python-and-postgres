@@ -13,6 +13,11 @@
 *.db-shm
 *.db-wal
 
+# Tue 28 May 2024 03:08:27 AM CEST @Fedora 35
+# DB Browser for SQLite (DB4S) | Драган Ћајић
+# https://sqlitebrowser.org/
+data.db-journal
+
 ### Flask ###
 instance/*
 !instance/.gitignore
